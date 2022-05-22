@@ -1,0 +1,155 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    height: 100vh;
+}
+header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+}
+.main {
+    height: calc(100vh - 100px);
+    width: 100%;
+}
+.main .container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.container div{
+    width: 80%;
+    padding: 20px;
+}
+.exchange{
+    display: flex;
+    justify-content: space-evenly;
+}
+.exchange div{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+.exchange div input{
+    font-size: 16px;
+}
+
+/* profile page */
+.container{
+    width: 100%;
+    padding: 10px;
+}
+.container .details{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    background-color: #f1f1f1;
+}
+.container .details ul{
+    list-style: none;
+    position: relative
+}
+.container .details ul:first-child::after{
+    content: "";
+    position: absolute;
+    height: 100%;
+    border: 1px dashed black;
+    top: 0%;
+    left: 200%;
+}
+.container .details ul li{
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin: 16px 0;
+    display: flex;
+    align-items: center;
+}
+.container .details ul li button{
+    margin-left: 10px;
+    padding: 2px 15px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.container .details ul li button:hover{
+    border: none;
+    background: green;
+    color: white;
+}
+/* portfolio page */
+.container .top{
+    padding: 0;
+    margin: auto;
+    width: 70%;
+}
+.top ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin-bottom: 20px;
+}
+.top ul li{
+    margin: 0 10px;
+}
+table{
+    border: 2px solid black;
+    width: 70%;
+    margin: auto;
+}
+table thead{
+    height: 50px;
+    border: 2px solid black;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+table thead tr, table tbody tr{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 20% 35% 30% 15%;
+}
+table tbody{
+    border: 2px solid black;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+table tbody tr{
+    margin: 10px 0;
+}
+table tbody tr td{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+table tbody tr td img{
+    height: 30px;
+    margin-right: 5px;
+}
+table tbody tr td:last-child button{
+    border: 1px solid black;
+    background-color: rgb(141, 77, 205);
+    color: white;
+    cursor: pointer;
+    border-color: rgb(141, 77, 205);
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 5px 10px;
+}
+/* canvas */
+#myChart{
+    height: 100px;
+}
