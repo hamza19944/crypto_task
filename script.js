@@ -1,99 +1,115 @@
-// let url = "https://api.coindesk.com/v1/bpi/historical/close.json"
-// let arr = []
-// let obj = {}
-// let key;
-// let value;
+// draw chart function
+function drawChart() {
 
-// fetch(url)
-//   .then(response => response.json())
-//   .then(dt => {
-//     for(const [k, v] of Object.entries(dt.bpi)){
-//         arr.push([k, v])
-//     }
-//     let clips = arr.slice(-14)
-//     clips.forEach(clip => {
-//         key = clip[0]
-//         value = clip[1]
-//         obj[key] = value
-//     })
+    
+    let listValue = localStorage.getItem('arr').split(",")
+    
+    let lis = document.querySelectorAll(".values li h2")
+    lis.forEach((li, i) => {
+        li.innerText = listValue[i]
+    })
 
-//     // start chart
-//     const data = {
-//         labels: Object.keys(obj),
-//         datasets: [{
-//             label: '',
-//             backgroundColor: 'rgb(255, 99, 132)',
-//             borderColor: 'rgb(255, 99, 132)',
-//             data: Object.values(obj),
-//         }]
-//     };
-//     const config = {
-//         type: 'line',
-//         data: data,
-//         options: {}
-//     };
-//     const myChart = new Chart(
-//         document.getElementById('myChart'),
-//         config
-//     );
-// });
+    // start chart
+    const data = {
+        labels: ['USD', "BTC", "ETH"],
+        datasets: [{
+            label: '',
+            backgroundColor: ['red','blue', "yellow"],
+            borderColor: 'rgb(255, 99, 132)',
+            data: listValue,
+        }]
+    };
+    const config = {
+        type: 'pie',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    }
+    const myChart = new Chart(
+        document.getElementById("myChart"),
+        config
+    );
+}
+drawChart()
 
 
-
-// let btcInput = document.querySelector(".btc").lastElementChild
-// let ethInput = document.querySelector(".eth").lastElementChild
-// let usdInput = document.querySelector(".usd").lastElementChild
-
-// let both = "https://api.coinlore.net/api/ticker/?id=90,80"
-
-// fetch(both).then(res => res.json()).then(dt => {
-//     btcInput.value = 1
-//     usdInput.value = dt[0]['price_usd']
-//     ethInput.value = (dt[0]['price_usd'] / dt[1]['price_usd']).toFixed(2)
-//     return dt[1]["price_usd"]
-// }).then((repo)=>{
-//     window.setTimeout(()=> {
-//         newobj = {
-//             "btc": btcInput.value,
-//             "usd": usdInput.value,
-//             "eth": ethInput.value,
-//             "ethtousd": repo
-//         }
-//     }, 0)
-// })
-
-// let newobj = {}
+// show input field to add or remove
+let btns = document.querySelectorAll(".btns li")
+let input = document.querySelector("aside .input")
+let money = 0;
+let show = false;
+let fixed;
 
 
-// const allInputs = document.querySelectorAll(".exchange>div>input")
+let lists = document.querySelectorAll(".values li")
+// let listValue;
+lists.forEach(li => {
+    // click to show label value
+    li.addEventListener("click", () => {
+        money = li.querySelector("h2").innerText
+        input.querySelector("label").innerText = money
+        input.querySelector("p").style.display = 'none'
+        fixed = input.querySelector("label").innerText
+        // show hide label
+        show = true
+        if (show === true) {
+            input.querySelector("label").style.display = 'block'
+        }
+    })
+})
 
-// allInputs.forEach(inputAdd => {
-//     inputAdd.addEventListener("keyup", () => {
-//         if (inputAdd.value >= 0) {
-//             if (inputAdd.parentElement.className === 'btc') {
-//                 usdInput.value = inputAdd.value * newobj['usd']
-//                 ethInput.value = inputAdd.value * newobj["eth"]
-//             }else if(inputAdd.parentElement.className === 'usd'){
-//                 btcInput.value = inputAdd.value/newobj['usd']
-//                 ethInput.value = inputAdd.value/newobj["ethtousd"]
-//             }else{
-//                 btcInput.value = inputAdd.value/newobj['eth']
-//                 usdInput.value = inputAdd.value * newobj["ethtousd"]
-//             }
-//         }
-//     })
-//     inputAdd.addEventListener("mouseup", () => {
-//         if (inputAdd.value >= 0) {
-//             if (inputAdd.parentElement.className === 'btc') {
-//                 usdInput.value = inputAdd.value * newobj['usd']
-//                 ethInput.value = inputAdd.value * newobj["eth"]
-//             }else if(inputAdd.parentElement.className === 'usd'){
-//                 btcInput.value = inputAdd.value/newobj['usd']
-//                 ethInput.value = inputAdd.value/newobj["ethtousd"]
-//             }else{
-//                 btcInput.value = inputAdd.value/newobj['eth']
-//                 usdInput.value = inputAdd.value * newobj["ethtousd"]
-//             }
-//         }
-//     })
-// })
+
+btns.forEach(btn => {
+    // add or delete value
+    btn.addEventListener("click",() => {
+        // regular the value to be always positive
+        let reg = /[0-9]/g
+        let inputValue = input.querySelector("input").value.match(reg).join("")
+        
+        
+        input.style.display = 'flex'
+
+        // show hide label
+        if (show === false) {
+            input.querySelector("label").style.display = 'none'
+        }
+
+        // if clicked add + 
+        if(btn.className === "add"){   
+            money = +money + +inputValue 
+            input.querySelector("input").value = ''
+            if(money < 0){
+                money = 0
+            }
+            
+        // if clicked delete -
+        }else{
+            money = +money - +inputValue 
+            input.querySelector("input").value = ''
+            if(money < 0){
+                money = 0
+            }
+        }
+
+        // change the value of label and main value
+        input.querySelector("label").innerHTML = money
+        lists.forEach(li => {
+            if(li.querySelector("h2").innerText === fixed){
+                li.querySelector("h2").innerText = money
+                fixed = input.querySelector("label").innerHTML
+            }
+        })
+        toLocal()
+        function toLocal() {
+            let listValue = []
+    
+            let lis = document.querySelectorAll(".values li h2")
+            lis.forEach(li => {
+                listValue.push(+li.innerText)
+            })
+            localStorage.setItem("arr", listValue)
+        }
+    })
+})

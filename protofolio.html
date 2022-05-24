@@ -8,38 +8,27 @@
     <title>Document</title>
 </head>
 <header>
-    <div class="index">
-        <a href="./index.html">Home</a>
+    <div class="profile">
+        <a href="index.html">My Profile</a>
     </div>
 </header>
 <body>
-    <!-- <div class="container" id="app">
-        <div class="details">
-            <ul>
-                <li>User Name</li>
-                <li>Balance</li>
-                <li>E-mail</li>
-            </ul>
-            <ul>
-                <li>Mark Polo</li>
-                <li><span>0.00</span>&dollar; <button>Edit</button></li>
-                <li>example@gmail.com</li>
-            </ul>        
-        </div>
-    </div>
-    <div>
-        <canvas id="myChart"></canvas>
-    </div> -->
-    <div class="container" id="app">
-        <div class="top">
-            <ul>
-                <li>portfolio</li>
-                <li>options</li>
-            </ul>
-            <ul>
-                <li><h2>1234</h2></li>
-                <li>rate of change</li>
-            </ul>
+    <div class="container">
+        <div class="container" id="app" v-cloak>
+            <div class="exchange">
+                <div class="btc">
+                    <label for="btc">BTC <span>{{ span[0] }}</span></label>
+                    <input type="number" min="0" v-model="btcToUsd" @change="btc">
+                </div>
+                <div class="usd">
+                    <label for="USD">USD</label>
+                    <input type="number" min="0" v-model="usdToBtc" @change="usd">
+                </div>
+                <div class="eth">
+                    <label for="eth">ETH <span>{{ span[1] }}</span></label>
+                    <input type="number" min="0" v-model="eth" @change="ethM">
+                </div>
+            </div>
         </div>
         <table class="bottom">
             <thead>
@@ -47,7 +36,6 @@
                     <th>coin</th>
                     <th>rate</th>
                     <th>price/USD</th>
-                    <th>Holdings</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -56,6 +44,72 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/vue@3"></script>
-    <script src="./script-prof.js"></script>
+    <script>
+        let spans = []
+        function dataNeeded(){
+            let arrPrices = []
+            fetch('https://api.coinstats.app/public/v1/coins?skip=0&limit=5&currency=USD').then(res => res.json()).then(dt => {
+                for(let i = 0; i < 2; i++){
+                    arrPrices.push(dt["coins"][i].price.toFixed(2))
+                    arrPrices.push(dt["coins"][i].priceBtc.toFixed(2))
+                    spans.push(dt.coins[i].priceChange1h)
+                }
+            })
+            return arrPrices
+        }
+        let arr1 = dataNeeded()
+        setTimeout(() => {
+            let app = Vue.createApp({
+                data(){
+                    return{
+                        usdToBtc: arr1[0],
+                        btcToUsd: 1,
+                        usdToEth: arr1[2],
+                        ethToBtc: arr1[3],
+                        eth: this.btcToEth(),
+                        span: spans
+                    }
+                },
+                computed:{
+                    
+                },
+                methods:{
+                    btcToEth(){
+                        let res = (arr1[3] * 100)
+                        this.ethToBtc = 100 / res
+                        return this.ethToBtc.toFixed(2)
+                    },
+                    btc(){
+                        this.usdToBtc = this.btcToUsd * arr1[0]
+                        this.eth = this.btcToUsd * this.btcToEth()
+                    },
+                    usd(){
+                        this.btcToUsd = this.usdToBtc / arr1[0]
+                        this.eth = this.btcToUsd * this.btcToEth()
+                    },
+                    ethM(){
+                        this.btcToUsd = this.eth / this.btcToEth()
+                        this.usdToBtc = this.btcToUsd * arr1[0]
+                    }
+                }
+            })
+            app.mount("#app")
+
+            let span = document.querySelectorAll("label span")
+            for(let i = 0; i < span.length; i++){
+                let style = window.getComputedStyle(span[i], ":before")
+                let content = style.getPropertyValue("content")
+                // content = "\\2193"
+                if(span[i].innerText.includes('-')){
+                    span[i].style.color = "red"
+                }else{
+                    span[i].style.color = "green"
+                }
+            }
+
+        }, 700)
+
+    </script>
+    <script src="script-prof.js" type="module"></script>
 </body>
 </html>

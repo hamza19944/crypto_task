@@ -1,8 +1,13 @@
-// let btn = document.querySelector(".container .details ul li button")
+// set date of last 2 weeks
+var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
 
-// btn.addEventListener("click", (e) => {
-//     e.target.style.display = 'none'
-// })
+
+let dateArr = []
+for (let i = 13; i >= 0; i--) {
+    let date = new Date();
+    date.setDate(date.getDate() - i);
+    dateArr.push(date.toLocaleDateString("en-US", options))
+}
 
 let coins = []
 let theUrl = "https://api.coinstats.app/public/v1/coins?skip=0&limit=5&currency=USD"
@@ -65,15 +70,15 @@ setTimeout(() => {
             </td>
             <td id="${coins[i].id}"></td>
             <td>${coins[i].price.toFixed(2)}</td>
-            <td><button>ADD</button></td>`
+            `
         document.querySelector(".bottom tbody").appendChild(tr)
         coin = new Coin(coins[i].id);
         // let arr = coin.getChartData()
         document.getElementById(`${coins[i].id}`).appendChild(createCanvas)
 
-        // start chart
+    // start chart
     const data = {
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', 'yesterday', 'today'],
+        labels: dateArr,
         datasets: [{
             label: '',
             backgroundColor: 'rgb(255, 99, 132)',
@@ -118,7 +123,7 @@ setTimeout(() => {
         config
     );
 }
-}, 500)
+}, 700)
 
 class Coin{
     constructor(id){

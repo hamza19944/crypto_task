@@ -4,38 +4,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 <body>
     <header>
-        <div class="profile">
-            <a href="./protofolio.html">My Profile</a>
+        <div class="index">
+            <a href="protofolio.html">Home</a>
         </div>
     </header>
     <div class="main">
-    <div class="container">
+        <aside>
+            <h2>Your Charge</h2>
+            <div class="top">
+                <ul class="values">
+                    <li><h2>70</h2><span>/$</span></li>
+                    <li><h2>20</h2><span>/BTC</span></li>
+                    <li><h2>30</h2><span>/ETH</span></li>
+                </ul>
+                <ul class="btns">
+                    <li class="add">Add</li>
+                    <li class="remove">Delete</li>
+                </ul>
+            </div>
+            <div class="input">
+                <p>choose the currency</p>
+                <label>1234</label>
+                <input type="number" min="0" value="0">
+            </div>
+        </aside>
         <div>
-            <h3>this is Start</h3> <hr>
-            <canvas id="myChart"></canvas>
-        </div>
-        <div class="exchange">
-            <div class="btc">
-                <label for="btc">BTC</label>
-                <input type="number">
-            </div>
-            <div class="usd">
-                <label for="USD">USD</label>
-                <input type="number">
-            </div>
-            <div class="eth">
-                <label for="eth">ETH</label>
-                <input type="number">
-            </div>
-        </div>
+            <canvas id="myChart" class="chart-container" style="position: relative; height:20vh; width:20vw"></canvas>
         </div>
     </div>
+    <script src="https://unpkg.com/vue@3"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./script.js"></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>
