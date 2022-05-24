@@ -32,7 +32,8 @@ function drawChart() {
         config
     );
 }
-drawChart()
+
+window.onload = drawChart()
 
 
 // show input field to add or remove
@@ -111,5 +112,14 @@ btns.forEach(btn => {
             })
             localStorage.setItem("arr", listValue)
         }
+        let chart = document.querySelector("#myChart")
+        let div = chart.parentElement
+        chart.remove()
+        let canvas = document.createElement("canvas")
+        canvas.id = 'myChart'
+        canvas.className = 'chart-container'
+        canvas.style = "position: relative; height:20vh; width:20vw"
+        div.appendChild(canvas)
+        drawChart()
     })
 })
